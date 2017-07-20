@@ -11,13 +11,13 @@ from dlib_models import models
 def face_detection(filepath):
     """
     Detects faces in an image, makes borders around them, and gives their descriptors
-    
+
     Parameters
     --------------
-    
+
     Returns
     --------------
-    
+
     """
     img_array = io.imread(filepath)
 
@@ -42,9 +42,9 @@ def face_detection(filepath):
 def borders(det):
     """
     Calculates the borders for image
-    
-    
-    
+
+
+
     """
 
     l, r, t, b = det.left(), det.right(), det.top(), det.bottom()
