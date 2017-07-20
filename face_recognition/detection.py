@@ -70,6 +70,7 @@ def descriptors(det):
 
     face_rec_model = models["face rec"]
 
+    shape_predictor = models["shape predict"]
     shape = shape_predictor(img_array, det)
     descriptors = np.array(face_rec_model.compute_face_descriptor(img_array, shape))
 
