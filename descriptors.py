@@ -1,4 +1,24 @@
 def descriptors(detections):
+    """
+    Calculates and returns descriptors for all detected faces in image
+    
+    Parameters
+    -----------------------
+    detections: List of detected faces
+        
+    Returns
+    ----------------------
+    
+    """
+    import skimage.io as io
+    import numpy as np
+    import dlib_models
+    from dlib_models import load_dlib_models
+
+    load_dlib_models()
+
+    from dlib_models import models
+
     shape_predictor = models["shape predict"]
 
     descriptors = []
