@@ -17,9 +17,9 @@ except ImportError:
     print("Warning: `skimage.io` must be installed in order to use `face_recognition`")
 
 
-setup(name='audio_identification',
+setup(name='face_recognition',
       version='1.0',
-      description='Identifies audio samples',
+      description='Identifies faces',
       authors='Petar Griggs (@Anonymission), Michael Lai (@impostercafe), Amanda Wang (@CandyMandy28), Anthony Cavallaro (@QuantatativeFinancier)',
       author_email="marrs2k@gmail.com",
       packages=find_packages(),
