@@ -26,4 +26,4 @@ def add_face(descriptor, name) :
 
 def match_face(descriptor) :
     best_match = max(iter(face_data), key=lambda x: np.sqrt(face_data[x]**2 - descriptor))
-    return face_data[best_match]
+    return best_match
