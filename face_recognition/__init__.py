@@ -1,22 +1,28 @@
 import camera
 import skimage.io as io
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 
-from config import *
+from .config import *
+from .detection import borders
+from .detection import face_detection
 
 
 def import_picture(filepath) :
     """
     """
     img_array = io.imread(filepath)
-    face_borders, face_descriptors = face_detection(img_array)
+    face_descriptors = face_detection(img_array)
+
+    show_image(img_array, face_descriptors)
 
     if len(face_descriptors) == 0 :
         return "No face is detected"
     elif len(face_descriptors) == 1 :
-        if face_descriptor[0] not in face_data :
+        if face_descriptors[0] not in face_data :
             name = input("An unknown face is detected. If you would like to save this image, please enter the person's name. Otherwise, please enter 'None': ")
             if name is not None :
-                add_face(face_descriptor[0], name)
+                add_face(face_descriptors[0], name)
                 save()
                 return "Picture saved in database for %s" % (name)
             else :
@@ -46,3 +52,23 @@ def take_picture() :
     """
     """
     pass
+
+
+def show_image(img_array, face_descriptors) :
+    # Create figure and axes
+    fig, ax = plt.subplots(1)
+
+    # Display the image
+    ax.imshow(img_array)
+
+    for descriptor in face_descriptors:
+        #Get borders for descriptor
+        l, r, t, b = borders(descriptor)
+
+        # Create a Rectangle patch
+        rect = patches.Rectangle((l, t), r - l, b - t, linewidth=1, edgecolor='r', facecolor='none')
+
+        # Add the patch to the Axes
+        ax.add_patch(rect)
+
+    plt.show()
