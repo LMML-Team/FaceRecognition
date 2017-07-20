@@ -31,9 +31,12 @@ def face_detection(filepath):
     detections = face_detect(img_array, upscale)
     detections = list(detections)
 
+    face_borders = []
+    face_descriptors = []
+
     for i in range(len(detections)):
-        borders(detections[i])
-        descriptors(detections[i])
+        face_borders.append(borders(detections[i]))
+        face_descriptors.append(descriptors(detections[i]))
 
 
 def borders(det):
@@ -66,7 +69,7 @@ def descriptors(det):
 
 
     face_rec_model = models["face rec"]
-    
+
     shape = shape_predictor(img_array, det)
     descriptors = np.array(face_rec_model.compute_face_descriptor(img_array, shape))
 
