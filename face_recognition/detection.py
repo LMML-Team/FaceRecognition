@@ -36,7 +36,7 @@ def face_detection(filepath):
 
     for i in range(len(detections)):
         face_borders.append(borders(detections[i]))
-        face_descriptors.append(descriptors(detections[i]))
+        face_descriptors.append(descriptors(detections[i], img_array))
 
 
 def borders(det):
@@ -52,7 +52,7 @@ def borders(det):
     return borders
 
 
-def descriptors(det):
+def descriptors(det, img_array):
     """
     Calculates and returns descriptors for all detected faces in image
 
