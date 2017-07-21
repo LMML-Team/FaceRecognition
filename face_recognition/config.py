@@ -29,15 +29,36 @@ def add_face(descriptor, name) :
     save()
 
 
+def remove_person(name) :
+    '''
+    '''
+    if name not in face_data :
+        return "%s is not in the database" % (name)
+    else :
+        del face_data[name]
+        save()
+
+
+def list_names() :
+    '''
+    '''
+    return list(face_data.keys())
+
+
 def match_face(descriptor) :
     '''
     '''
     descriptors = np.vstack(list(face_data.values()))
-    dist = np.sqrt(np.abs(np.sum(descriptors**2, axis=1, keepdims=True) + np.sum(descriptor**2) - 2 * np.dot(descriptors, descriptor)))
+    dist = np.sqrt(np.abs(np.sum(descriptors**2, axis=1) + np.sum(descriptor**2) - 2 * np.dot(descriptors, descriptor)))
     dist_index = np.argmax(dist)
-    best_match = list(face_data.keys())[dist_index]
-    return best_match, face_data[best_match]
-    # will return none if no best match found
+    if dist[dist_index] > .4 :
+        best_match = None
+        best_descriptor = None
+    else :
+        best_match = list(face_data.keys())[dist_index]
+        best_descriptor = face_data[best_match]
+
+    return best_match, best_descriptor
 
 
 def get_names(face_descriptors) :
@@ -57,7 +78,7 @@ def format_names(names, face_descriptors) :
     elif len(names) == 1 :
         if names[0] is None :
             name = input("An unknown face is detected. If you would like to save this image, please enter the person's name. Otherwise, please enter 'None': ")
-            if name.lower() is not 'none' :
+            if name.lower() != 'none' :
                 add_face(face_descriptors[0], name)
                 save()
                 return "Picture saved in database for %s" % (name), True
@@ -109,16 +130,15 @@ def show_image(img_array, face_borders, names) :
     # Display the image
     ax.imshow(img_array)
 
-    index = 0
-    for border in face_borders:
+    for i, border in enumerate(face_borders):
         # Get borders for descriptor
         l, r, t, b = border
 
         # Create a Rectangle patch
         rect = patches.Rectangle((l, t), r - l, b - t, linewidth=1, edgecolor='y', facecolor='none')
-        ax.annotate(names[index], (r, t), color='w', weight='bold', fontsize=10, ha='right', va='bottom')
+        if names[i] is not None :
+            ax.annotate(names[i], (r, t), color='w', weight='bold', fontsize=10, ha='right', va='bottom')
 
-        index += 1
         # Add the patch to the Axes
         ax.add_patch(rect)
 

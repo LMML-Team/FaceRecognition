@@ -28,9 +28,9 @@ def face_detection(img_array):
     face_descriptors = np.zeros((len(detections), 128))
     face_borders = np.zeros((len(detections), 4))
 
-    for i in range(len(detections)):
-        face_descriptors[i] = descriptors(detections[i], img_array)
-        face_borders[i] = borders(detections[i])
+    for i, det in enumerate(detections):
+        face_descriptors[i] = descriptors(det, img_array)
+        face_borders[i] = borders(det)
 
     return face_descriptors, face_borders
 
