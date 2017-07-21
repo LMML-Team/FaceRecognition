@@ -4,8 +4,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
-from .detection import borders
-
 face_data = {}
 with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "face_data.pickle"), 'rb') as f:
     face_data = pickle.load(f)
