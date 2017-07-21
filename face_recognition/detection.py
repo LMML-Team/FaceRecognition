@@ -17,7 +17,7 @@ def face_detection(img_array):
     --------------
 
     """
-    if np.size(img_array, 2) == 4:
+    if np.shape(img_array)[-1] == 4:
         img_array = img_array[:, :, :4]
 
     face_detect = models["face detect"]
