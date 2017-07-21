@@ -33,7 +33,7 @@ def match_face(descriptor) :
     '''
     smallest_dist = 0
     for i, x in enumerate(iter(face_data)) :
-        if len(face_data[x]) == 1 :
+        if len(face_data[x]) == 128 :
             dist = np.mean(np.sqrt(face_data[x]**2 + descriptor**2 - 2 * np.dot(face_data[x], descriptor)))
         else :
             dist = np.mean(np.sqrt(np.sum(face_data[x]**2, axis=1, keepdims=True) + descriptor**2 - 2 * np.dot(face_data[x], descriptor)))
