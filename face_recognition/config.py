@@ -7,8 +7,8 @@ import matplotlib.patches as patches
 from .detection import borders
 
 face_data = {}
-# with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "face_data.pickle"), 'rb') as f:
-#    face_data = pickle.load(f)
+with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "face_data.pickle"), 'rb') as f:
+    face_data = pickle.load(f)
 
 
 def save() :
@@ -33,7 +33,6 @@ def add_face(descriptor, name) :
 def match_face(descriptor) :
     '''
     '''
-    return None
     best_match = max(iter(face_data), key=lambda x: np.sqrt(np.sum(face_data[x]**2, axis=1, keepdims=True) + descriptor**2 - 2 * np.dot(face_data[x], descriptor)))
     return best_match, face_data[best_match]
     # will return none if no best match found
@@ -56,7 +55,7 @@ def format_names(names, face_descriptors) :
     elif len(names) == 1 :
         if names[0] is None :
             name = input("An unknown face is detected. If you would like to save this image, please enter the person's name. Otherwise, please enter 'None': ")
-            if name is not None :
+            if name.lower() is not 'none' :
                 add_face(face_descriptors[0], name)
                 save()
                 return "Picture saved in database for %s" % (name)
@@ -94,16 +93,16 @@ def show_image(img_array, face_borders, names) :
 
     # Display the image
     ax.imshow(img_array)
-    
+
     index = 0
     for border in face_borders:
         # Get borders for descriptor
         l, r, t, b = border
 
         # Create a Rectangle patch
-        rect = patches.Rectangle((l, t), r - l, b - t, linewidth=1, edgecolor='r', facecolor='none')
+        rect = patches.Rectangle((l, t), r - l, b - t, linewidth=1, edgecolor='y', facecolor='none')
         ax.annotate(names[index], (r, t), color='w', weight='bold', fontsize=10, ha='right', va='bottom')
-    
+
         index += 1
         # Add the patch to the Axes
         ax.add_patch(rect)

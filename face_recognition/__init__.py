@@ -24,7 +24,7 @@ def add_picture(filepath=None) :
     face_descriptors, face_borders = face_detection(img_array)
     names = get_names(face_descriptors)
     name_str = format_names(names, face_descriptors)
-    if len(face_descriptors) == 1 :
+    if len(names) == 1 & names[0] is None & face_descriptors[0] in face_data.values() :
         names = get_names(face_descriptors)
     show_image(img_array, face_borders, names)
 
