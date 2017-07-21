@@ -26,7 +26,7 @@ def face_detection(img_array):
 
     detections = face_detect(img_array, upscale)
 
-    face_descriptors = np.array()
+    face_descriptors = np.array([])
 
     for i in range(len(detections)):
         face_descriptors.append(descriptors(detections[i], img_array))
