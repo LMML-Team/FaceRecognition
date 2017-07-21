@@ -72,7 +72,7 @@ def return_names(face_descriptors) :
         return to_return + " are detected"
 
 
-def show_image(img_array, face_descriptors) :
+def show_image(img_array, face_descriptors, list_names) :
     '''
     '''
     # Create figure and axes
@@ -81,12 +81,18 @@ def show_image(img_array, face_descriptors) :
     # Display the image
     ax.imshow(img_array)
 
+    index = 0
     for descriptor in face_descriptors:
+
         # Get borders for descriptor
         l, r, t, b = borders(descriptor)
 
         # Create a Rectangle patch
-        rect = patches.Rectangle((l, t), r - l, b - t, linewidth=1, edgecolor='r', facecolor='none')
+        rect = patches.Rectangle((l, t), r - l, b - t, linewidth=2, edgecolor='y', facecolor='none')
+        ax.annotate(list_names[index], (r, t), color='w', weight='bold',
+                    fontsize=10, ha='right', va='bottom')
+
+        index += 1
 
         # Add the patch to the Axes
         ax.add_patch(rect)
