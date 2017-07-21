@@ -21,9 +21,11 @@ def add_picture(filepath=None) :
         sleep(2.5)
         img_array = camera.take_picture()
 
-    face_descriptors = face_detection(img_array)
+    face_descriptors, face_borders = face_detection(img_array)
     names = get_names(face_descriptors)
-    name_str = return_names(names, face_descriptors)
-    show_image(img_array, face_descriptors)
+    name_str = format_names(names, face_descriptors)
+    if len(face_descriptors) == 1 :
+        names = get_names(face_descriptors)
+    show_image(img_array, face_borders, names)
 
     return name_str

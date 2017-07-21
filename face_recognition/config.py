@@ -33,6 +33,7 @@ def add_face(descriptor, name) :
 def match_face(descriptor) :
     '''
     '''
+    return None
     best_match = max(iter(face_data), key=lambda x: np.sqrt(np.sum(face_data[x]**2, axis=1, keepdims=True) + descriptor**2 - 2 * np.dot(face_data[x], descriptor)))
     return best_match, face_data[best_match]
     # will return none if no best match found
@@ -43,7 +44,8 @@ def get_names(face_descriptors) :
     '''
     names = []
     for descriptor in face_descriptors :
-        names.append(match_face(descriptor)[0])
+        names.append(match_face(descriptor))
+    return names
 
 
 def format_names(names, face_descriptors) :
@@ -52,7 +54,7 @@ def format_names(names, face_descriptors) :
     if len(names) == 0 :
         return "No face is detected"
     elif len(names) == 1 :
-        if names[0] not in face_data :
+        if names[0] is None :
             name = input("An unknown face is detected. If you would like to save this image, please enter the person's name. Otherwise, please enter 'None': ")
             if name is not None :
                 add_face(face_descriptors[0], name)
@@ -84,7 +86,7 @@ def format_names(names, face_descriptors) :
         return to_return
 
 
-def show_image(img_array, face_descriptors) :
+def show_image(img_array, face_borders, names) :
     '''
     '''
     # Create figure and axes
@@ -92,14 +94,17 @@ def show_image(img_array, face_descriptors) :
 
     # Display the image
     ax.imshow(img_array)
-
-    for descriptor in face_descriptors:
+    
+    index = 0
+    for border in face_borders:
         # Get borders for descriptor
-        l, r, t, b = borders(descriptor)
+        l, r, t, b = border
 
         # Create a Rectangle patch
         rect = patches.Rectangle((l, t), r - l, b - t, linewidth=1, edgecolor='r', facecolor='none')
-
+        ax.annotate(names[index], (r, t), color='w', weight='bold', fontsize=10, ha='right', va='bottom')
+    
+        index += 1
         # Add the patch to the Axes
         ax.add_patch(rect)
 
