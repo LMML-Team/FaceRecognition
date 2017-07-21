@@ -11,10 +11,12 @@ def face_detection(img_array):
     Detects faces in an image, makes borders around them, and gives their descriptors
 
     Parameters
-    --------------
+    -----------------------
+    img_array: array of the image
 
     Returns
-    --------------
+    -----------------------
+    face_descriptors: an array of the descriptors of the detected faces
 
     """
     if np.size(img_array, 2) == 4:
@@ -37,9 +39,17 @@ def face_detection(img_array):
 def borders(det):
     """
     Calculates the borders for image
-
-
-
+    
+    Parameters
+    -----------------------
+    det: List of detected faces
+    
+    Return
+    -----------------------
+    l: left coordinates of the box around the face
+    r: right coordinates of the box around the face
+    t: top coordinates of the box around the face
+    b: bottom coordinates of the box around the face
     """
     l, r, t, b = det.left(), det.right(), det.top(), det.bottom()
     return l, r, t, b
