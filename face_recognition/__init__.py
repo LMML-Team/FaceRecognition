@@ -19,7 +19,7 @@ def add_picture(filepath=None) :
     else :
         print("Please prepare to have your picture taken")
         sleep(2.5)
-        img_array = camera.take_picture()
+        img_array = take_picture()
 
     face_descriptors, face_borders = face_detection(img_array)
     names = get_names(face_descriptors)
