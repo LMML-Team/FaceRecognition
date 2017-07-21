@@ -12,16 +12,16 @@ with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "face_data.p
 
 
 def save() :
-    '''
+    """
     Saves face_data to a .pickle file
-    '''
+    """
     with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "face_data.pickle"), 'wb') as f:
         pickle.dump(face_data, f, pickle.HIGHEST_PROTOCOL)
 
 
 def add_face(descriptor, name) :
-    '''
-    '''
+    """
+    """
     if name not in face_data :
         face_data[name] = descriptor
     else:
@@ -31,15 +31,15 @@ def add_face(descriptor, name) :
 
 
 def match_face(descriptor) :
-    '''
-    '''
+    """
+    """
     best_match = max(iter(face_data), key=lambda x: np.sqrt(np.sum(face_data[x]**2, axis=1, keepdims=True) + descriptor**2 - 2 * np.dot(face_data[x], descriptor)))
     return best_match
 
 
 def return_names(face_descriptors) :
-    '''
-    '''
+    """
+    """
     if len(face_descriptors) == 0 :
         return "No face is detected"
     elif len(face_descriptors) == 1 :
@@ -73,8 +73,8 @@ def return_names(face_descriptors) :
 
 
 def show_image(img_array, face_descriptors) :
-    '''
-    '''
+    """
+    """
     # Create figure and axes
     fig, ax = plt.subplots(1)
 
