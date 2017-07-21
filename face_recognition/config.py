@@ -31,7 +31,17 @@ def add_face(descriptor, name) :
 def match_face(descriptor) :
     '''
     '''
-    best_match = max(iter(face_data), key=lambda x: np.sqrt(np.sum(face_data[x]**2, axis=1, keepdims=True) + descriptor**2 - 2 * np.dot(face_data[x], descriptor)))
+    smallest_dist = 0
+    for i, x in enumerate(iter(face_data)) :
+        if len(face_data[x]) == 1 :
+            dist = np.mean(np.sqrt(face_data[x]**2 + descriptor**2 - 2 * np.dot(face_data[x], descriptor)))
+        else :
+            dist = np.mean(np.sqrt(np.sum(face_data[x]**2, axis=1, keepdims=True) + descriptor**2 - 2 * np.dot(face_data[x], descriptor)))
+
+        if i == 0 | dist < smallest_dist :
+            smallest_dist = dist
+            best_match = face_data[x]
+
     return best_match, face_data[best_match]
     # will return none if no best match found
 
