@@ -50,8 +50,10 @@ def match_face(descriptor) :
     '''
     descriptors = np.vstack(list(face_data.values()))
     dist = np.sqrt(np.abs(np.sum(descriptors**2, axis=1) + np.sum(descriptor**2) - 2 * np.dot(descriptors, descriptor)))
-    dist_index = np.argmax(dist)
-    if dist[dist_index] > .4 :
+    dist_index = np.argmin(dist)
+    print(dist)
+
+    if dist[dist_index] > .3 :
         best_match = None
         best_descriptor = None
     else :
@@ -64,6 +66,7 @@ def match_face(descriptor) :
 def get_names(face_descriptors) :
     '''
     '''
+    #return [None]
     names = []
     for descriptor in face_descriptors :
         names.append(match_face(descriptor)[0])
