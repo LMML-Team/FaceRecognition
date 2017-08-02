@@ -12,9 +12,12 @@ def face_detection(img_array):
 
     Parameters
     --------------
+    img_array: int array
+        Array representing image in which faces are to be detected
 
     Returns
     --------------
+    face_descriptors: numpy array of descriptors for each detected face in img_array
 
     """
     if np.shape(img_array)[-1] == 4:
@@ -38,9 +41,22 @@ def face_detection(img_array):
 def borders(det):
     """
     Calculates the borders for image
-
-
-
+    
+    Parameters
+    --------------
+    det: int array
+        Detected face
+    
+    Returns
+    ----------------------
+    l: int list
+        Coordinates for left bound of border
+    r: int list
+        Coordinates for right bound of border
+    t: int list
+        Coordinates for top bound of border
+    b: int list
+        Coordinates for bottom bound of border
     """
     l, r, t, b = det.left(), det.right(), det.top(), det.bottom()
     return l, r, t, b
@@ -52,11 +68,16 @@ def descriptors(det, img_array):
 
     Parameters
     -----------------------
-    detections: List of detected faces
+    det: int array
+        Detected face
+    img_array: int array
+        Image containing the faces
+    
 
     Returns
     ----------------------
-    descriptors: List of descriptor numpy arrays
+    descriptors: list[int arrays]  
+        Descriptors for det in img_array
 
     """
     face_rec_model = models["face rec"]
