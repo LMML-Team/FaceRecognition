@@ -133,7 +133,7 @@ def format_names(names, face_descriptors, alexa) :
                     return "Picture not saved", False
         else :
             if alexa == True :
-                return "%s is detected" % (names[0])
+                return "%s is detected" % (names[0]), False
             else :
                 should_save = input("%s is detected. Would you like you save this picture? Please enter 'Yes' or 'No': " % (names[0]))
                 if should_save.lower() == "yes" :
