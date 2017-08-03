@@ -80,6 +80,7 @@ def match_face(descriptor) :
     else :
         best_match = list(face_data.keys())[dist_index]
         best_descriptor = face_data[best_match]
+    print(best_match)
 
     return best_match, best_descriptor
 
@@ -117,11 +118,12 @@ def format_names(names, face_descriptors, alexa) :
     alexa: boolean
         whether to prompt user to save photo or enter new name
     '''
+    print(names)
     if len(names) == 0 :
         return "No face is detected", False
     elif len(names) == 1 :
         if names[0] is None :
-            if alexa == True :
+            if alexa :
                 return "An unknown face is detected", False
             else :
                 name = input("An unknown face is detected. If you would like to save this image, please enter the person's name. Otherwise, please enter 'None': ")
@@ -132,7 +134,7 @@ def format_names(names, face_descriptors, alexa) :
                 else :
                     return "Picture not saved", False
         else :
-            if alexa == True :
+            if alexa :
                 return "%s is detected" % (names[0]), False
             else :
                 should_save = input("%s is detected. Would you like you save this picture? Please enter 'Yes' or 'No': " % (names[0]))
