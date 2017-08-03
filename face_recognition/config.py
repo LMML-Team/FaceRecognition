@@ -73,7 +73,7 @@ def get_names(face_descriptors) :
     return names
 
 
-def format_names(names, face_descriptors) :
+def format_names(names, face_descriptors, alexa) :
     '''
     '''
     if len(names) == 0 :
@@ -91,14 +91,17 @@ def format_names(names, face_descriptors) :
                 else :
                     return "Picture not saved", False
         else :
-            should_save = input("%s is detected. Would you like you save this picture? Please enter 'Yes' or 'No': " % (names[0]))
-            if should_save.lower() == "yes" :
-                add_face(face_descriptors[0], names[0])
-                return "Picture was saved", False
-            elif should_save.lower() == "no" :
-                return "Picture not saved", False
+            if alexa == True :
+                return "%s is detected" % (names[0])
             else :
-                raise Exception("Input is not valid")
+                should_save = input("%s is detected. Would you like you save this picture? Please enter 'Yes' or 'No': " % (names[0]))
+                if should_save.lower() == "yes" :
+                    add_face(face_descriptors[0], names[0])
+                    return "Picture was saved", False
+                elif should_save.lower() == "no" :
+                    return "Picture not saved", False
+                else :
+                    raise Exception("Input is not valid")
     elif len(names) == 2 :
         nones = names.count(None)
         to_return = ", ".join(filter(None, names))
@@ -149,8 +152,6 @@ def show_image(img_array, face_borders, names) :
         ax.add_patch(rect)
 
     plt.show()
-
-
 
 
 def show_image(img_array, face_borders, names) :
