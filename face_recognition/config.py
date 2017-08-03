@@ -80,13 +80,16 @@ def format_names(names, face_descriptors) :
         return "No face is detected", False
     elif len(names) == 1 :
         if names[0] is None :
-            name = input("An unknown face is detected. If you would like to save this image, please enter the person's name. Otherwise, please enter 'None': ")
-            if name.lower() != 'none' :
-                add_face(face_descriptors[0], name)
-                save()
-                return "Picture saved in database for %s" % (name), True
+            if alexa == True :
+                return "An unknown face is detected", False
             else :
-                return "Picture not saved", False
+                name = input("An unknown face is detected. If you would like to save this image, please enter the person's name. Otherwise, please enter 'None': ")
+                if name.lower() != 'none' :
+                    add_face(face_descriptors[0], name)
+                    save()
+                    return "Picture saved in database for %s" % (name), True
+                else :
+                    return "Picture not saved", False
         else :
             should_save = input("%s is detected. Would you like you save this picture? Please enter 'Yes' or 'No': " % (names[0]))
             if should_save.lower() == "yes" :
@@ -146,3 +149,78 @@ def show_image(img_array, face_borders, names) :
         ax.add_patch(rect)
 
     plt.show()
+
+
+
+
+def show_image(img_array, face_borders, names) :
+    '''
+    '''
+    # Create figure and axes
+    fig, ax = plt.subplots(1)
+
+    # Display the image
+    ax.imshow(img_array)
+
+    for i, border in enumerate(face_borders):
+        # Get borders for descriptor
+        l, r, t, b = border
+
+        # Create a Rectangle patch
+        rect = patches.Rectangle((l, t), r - l, b - t, linewidth=1, edgecolor='y', facecolor='none')
+        if names[i] is not None :
+            ax.annotate(names[i], (r, t), color='w', weight='bold', fontsize=10, ha='right', va='bottom')
+
+        # Add the patch to the Axes
+        ax.add_patch(rect)
+
+    plt.show()
+
+
+def rgb_to_hsv(rgb_img) :
+    '''
+    Parameters
+    -----------
+    rgb_img: numpy array of shape NxMx3
+    '''
+    rgb_prime = rgb_img / 255
+    rgb_max_index = np.argmax(rgb_img, axis=2)
+    Cmax = np.amax(rgb_prime, axis=2)
+    Cmin = np.amin(rgb_prime, axis=2)
+    delta = Cmax - Cmin
+    hue = np.zeros(rgb_img.shape)
+    sat = np.zeros(rgb_img.shape)
+
+    # gets indices of maximum prime colors
+    r_prime_indices = list(zip(np.where(rgb_max_index == 0 & delta != 0, rgb_prime)))
+    b_prime_indices = list(zip(np.where(rgb_max_index == 1 & delta != 0, rgb_prime)))
+    g_prime_indices = list(zip(np.where(rgb_max_index == 2 & delta != 0, rgb_prime)))
+    delta_zeros = list(zip(np.where(delta == 0)))
+    Cmax_zeros = list(zip(np.where(Cmax == 0)))
+    Cmax_nonzeros = list(zip(np.where(Cmax != 0)))
+
+    hue[delta_zeros] = 0
+    hue[r_prime_indices] = 60 * (rgb_prime[g_prime_indices] - rgb_prime[b_prime_indices]) / delta % 6
+    hue[g_prime_indices] = 60 * (rgb_prime[b_prime_indices] - rgb_prime[r_prime_indices]) / delta + 2
+    hue[b_prime_indices] = 60 * (rgb_prime[r_prime_indices] - rgb_prime[g_prime_indices]) / delta + 4
+
+    sat[Cmax_zeros] = 0
+    sat[Cmax_nonzeros] = delta[Cmax_nonzeros] / Cmax[Cmax_nonzeros]
+
+    hsv_img = np.dstack(hue, sat, Cmax)
+
+    return hsv_img
+
+
+def complementary_color(hsv_img) :
+    """
+    """
+    hue = hsv_img[0]
+    hue_greater_180 = list(zip(np.where(hue > 180)))
+    hue_less_eq_180 = list(zip(np.where(hue <= 180)))
+
+    comp_color_hsv = np.copy(hsv_img)
+    comp_color_hsv[0][hue_greater_180] = hue[hue_greater_180] - 180
+    comp_color_hsv[0][hue_less_eq_180] = hue[hue_less_eq_180] + 180
+
+    return comp_color_hsv
