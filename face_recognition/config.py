@@ -20,6 +20,14 @@ def save() :
 
 def add_face(descriptor, name) :
     '''
+    Adds descriptor and name to face_data, or averages current descriptor for name
+
+    Parameters
+    -----------
+    descriptor: ndarray
+        descriptor for face, returned by face_recognition.detections.face_detection
+    name: str
+        name of person to be stored in database with given descriptor
     '''
     if name not in face_data :
         face_data[name] = descriptor
@@ -31,6 +39,12 @@ def add_face(descriptor, name) :
 
 def remove_person(name) :
     '''
+    Removes name's descriptor and name from database
+
+    Parameters
+    -----------
+    name: str
+        name of person to be removed
     '''
     if name not in face_data :
         return "%s is not in the database" % (name)
@@ -41,12 +55,19 @@ def remove_person(name) :
 
 def list_names() :
     '''
+    Lists names of all people in database
     '''
     return list(face_data.keys())
 
 
 def match_face(descriptor) :
     '''
+    Finds the face descriptor from database that best matches descriptor
+
+    Parameters
+    -----------
+    descriptor: ndarray
+        descriptor of detected face
     '''
     descriptors = np.vstack(list(face_data.values()))
     dist = np.sqrt(np.abs(np.sum(descriptors**2, axis=1) + np.sum(descriptor**2) - 2 * np.dot(descriptors, descriptor)))
@@ -65,8 +86,18 @@ def match_face(descriptor) :
 
 def get_names(face_descriptors) :
     '''
+    Returns list of names corresponding to descriptors
+
+    Parameters
+    -----------
+    face_descriptors: iterable of ndarrays
+        iterable of face descriptors detected in a photo
+
+    Returns
+    --------
+    names: list of str
+        list of names best matching face descriptors
     '''
-    #return [None]
     names = []
     for descriptor in face_descriptors :
         names.append(match_face(descriptor)[0])
@@ -75,6 +106,16 @@ def get_names(face_descriptors) :
 
 def format_names(names, face_descriptors, alexa) :
     '''
+    Returns formatted string of user's names
+
+    Parameters
+    -----------
+    names: list of str
+        list of names of people in picture
+    face_descriptors: iterable of ndarrays
+        iterable of face descriptors detected in a photo
+    alexa: boolean
+        whether to prompt user to save photo or enter new name
     '''
     if len(names) == 0 :
         return "No face is detected", False
@@ -132,6 +173,17 @@ def format_names(names, face_descriptors, alexa) :
 
 def show_image(img_array, face_borders, names) :
     '''
+    Shows the image with faces boxed and labeled
+
+    Parameters
+    -----------
+    img_array: np.array
+        matrix of the image information
+    face_borders: iterable of ints
+        iterable of box coordinates for all faces recognized
+    names: iterable of strs
+        iterable of all names of faces recognized
+
     '''
     # Create figure and axes
     fig, ax = plt.subplots(1)
@@ -154,30 +206,7 @@ def show_image(img_array, face_borders, names) :
     plt.show()
 
 
-def show_image(img_array, face_borders, names) :
-    '''
-    '''
-    # Create figure and axes
-    fig, ax = plt.subplots(1)
-
-    # Display the image
-    ax.imshow(img_array)
-
-    for i, border in enumerate(face_borders):
-        # Get borders for descriptor
-        l, r, t, b = border
-
-        # Create a Rectangle patch
-        rect = patches.Rectangle((l, t), r - l, b - t, linewidth=1, edgecolor='y', facecolor='none')
-        if names[i] is not None :
-            ax.annotate(names[i], (r, t), color='w', weight='bold', fontsize=10, ha='right', va='bottom')
-
-        # Add the patch to the Axes
-        ax.add_patch(rect)
-
-    plt.show()
-
-
+# work in progress
 def rgb_to_hsv(rgb_img) :
     '''
     Parameters
