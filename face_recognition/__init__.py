@@ -6,7 +6,7 @@ from .config import *
 from .detection import face_detection
 
 
-def add_picture(filepath=None) :
+def add_picture(filepath=None, alexa=False) :
     """
 
     Parameters
@@ -23,7 +23,7 @@ def add_picture(filepath=None) :
 
     face_descriptors, face_borders = face_detection(img_array)
     names = get_names(face_descriptors)
-    name_str, first_saved = format_names(names, face_descriptors)
+    name_str, first_saved = format_names(names, face_descriptors, alexa)
     if first_saved :
         names = get_names(face_descriptors)
     show_image(img_array, face_borders, names)
