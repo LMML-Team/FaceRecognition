@@ -1,5 +1,6 @@
 import numpy as np
 import os
+from itertools import groupby
 
 class Node:
     """ Describes a node in a graph, and the edges connected
@@ -140,7 +141,7 @@ class Graph:
         """
         return len(self.unique_labels())
 
-    # not working
+
     def build_graph(self):
         """
         Builds graph of nodes and performs whispers algorithm
@@ -163,6 +164,7 @@ class Graph:
         """
         Moves node files to directory and sorts by label
         """
+        # creates new directory for photos if none provided in Graph initialiation
         if self.directory is None:
             dirname = os.path.join(os.path.dirname(os.path.realpath(__file__)), "photos")
             if not os.path.exists(dirname):
@@ -170,11 +172,17 @@ class Graph:
         else:
             dirname = self.directory
 
+        # determines most common truth value in clusters
         truth_dict = {}
         for node in self.nodes:
             if node.truth is not None and node.label not in truth_dict:
-                truth_dict[node.label] = node.truth
+                truth_dict[node.label] = [node.truth]
+            else:
+                truth_dict[node.label].append(node.truth)
+        for lab in truth_dict:
+            truth_dict[lab] = max([list(g) for k, g in groupby(sorted(ls))], key=lambda x: len(x))[0]
 
+        # saves image associated with node to directory named either label or truth value
         for node in self.nodes:
             if node.file_path is not None:
                 if node.label in truth_dict:
