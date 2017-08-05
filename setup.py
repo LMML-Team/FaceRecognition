@@ -20,8 +20,8 @@ except ImportError:
 setup(name='face_recognition',
       version='1.0',
       description='Identifies faces',
-      authors='Petar Griggs (@Anonymission), Michael Lai (@impostercafe), Amanda Wang (@CandyMandy28), Anthony Cavallaro (@QuantatativeFinancier)',
-      author_email="marrs2k@gmail.com",
+      authors='Michael Lai (@impostercafe), Amanda Wang (@CandyMandy28), Anthony Cavallaro (@QuantatativeFinancier), Petar Griggs (@Anonymission)',
+      author_email="mlai8088@gmail.com",
       packages=find_packages(),
       license="MIT"
       )
