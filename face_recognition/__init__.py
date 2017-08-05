@@ -4,11 +4,12 @@ from time import sleep
 
 from .config import *
 from .detection import face_detection
+from .whispers import Node, Graph
 
 
 def add_picture(filepath=None, alexa=False) :
     """
-
+    Adds picture to database of images
 
     Parameters
     -----------
@@ -33,3 +34,31 @@ def add_picture(filepath=None, alexa=False) :
         show_image(img_array, face_borders, names)
 
     return name_str
+
+
+def sort_pictures(directory):
+    """
+    Sorts directory of photos by people in photo
+
+    Parameters
+    -----------
+    directory: r"PATH"
+        path to directory of photos to sort
+    """
+    lab = 0
+    nodes = []
+
+    for file in os.listdir(directory):
+        if file.endswith((".jpg", ".png")):
+            img_array = io.imread(os.path.join(directory, file))
+            descriptor = np.mean(face_detection(img_array)[0], axis=0)
+            filename = os.fsdecode(file)
+            nodes.append(Node(lab, descriptor, file_path = os.path.join(directory, filename)))
+            lab += 1
+        else:
+            continue
+
+    graph = Graph(nodes)
+    graph.set_all_neighbors()
+    graph.build_graph()
+    graph.sort_pictures()
