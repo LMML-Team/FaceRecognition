@@ -175,10 +175,11 @@ class Graph:
         # determines most common truth value in clusters
         truth_dict = {}
         for node in self.nodes:
-            if node.truth is not None and node.label not in truth_dict:
-                truth_dict[node.label] = [node.truth]
-            else:
-                truth_dict[node.label].append(node.truth)
+            if node.truth is not None:
+                if str(node.label) not in truth_dict:
+                    truth_dict[str(node.label)] = [node.truth]
+                else:
+                    truth_dict[str(node.label)].append(node.truth)
         for lab in truth_dict:
             truth_dict[lab] = max([list(g) for k, g in groupby(sorted(ls))], key=lambda x: len(x))[0]
 
@@ -186,7 +187,7 @@ class Graph:
         for node in self.nodes:
             if node.file_path is not None:
                 if node.label in truth_dict:
-                    nodedir = os.path.join(dirname, str(truth_dict[node.label]))
+                    nodedir = os.path.join(dirname, truth_dict[node.label])
                 else:
                     nodedir = os.path.join(dirname, str(node.label))
                 if not os.path.exists(nodedir):
