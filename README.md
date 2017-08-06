@@ -1,7 +1,7 @@
 # FaceRecognition
 This is a student group project for MIT Beaver Works Summer Institute 2017: Cognitive Assistant Collaboration.
 
-The project is designed to detect a face and, with user input, save photos to a database of facial descriptors
+The project is designed to detect a face and, with user input, save photos to a database of facial descriptors. This project can also categorize unlabeled, unsorted photos from a given directory
 
 # Setup
 Install these packages and follow the instructions as stated: [Camera](https://github.com/LLCogWorks2017/Camera)
