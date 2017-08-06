@@ -53,6 +53,13 @@ def remove_person(name) :
         save()
 
 
+def clear_database():
+    '''
+    Clears database of descriptors and names
+    '''
+    face_data.clear()
+
+
 def list_names() :
     '''
     Lists names of all people in database

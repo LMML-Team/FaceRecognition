@@ -14,3 +14,10 @@ Enter this command:
 ```shell
 python setup.py develop
 ```
+
+# Database
+To import this package, there must be at least one face descriptor in the database (stored in face_data.pickle). The face_data.pickle file that comes with this package has a number of faces already stored; however if you wish to use your own photos and delete the face_data.pickle file instead of using the clear_database function (as is the preferred method), to avoid any errors upon importing, comment out the following lines from the top of config.py:
+```shell
+with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "face_data.pickle"), 'rb') as f:
+    face_data = pickle.load(f)
+```
